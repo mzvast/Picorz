@@ -12,7 +12,7 @@ for (var i = 0; i < settingboxesElements.length; i++) {
 saveBtn.onclick = function (e) {
     e.preventDefault();
     for (var i = 0; i < settingboxesElements.length; i++) {
-        configuration.readSettings('keys')[i] = settingboxesElements[i].value;
+        configuration.saveSettings('keys')[i] = settingboxesElements[i].value;
     }
     dialog.showMessageBox(null,{
         type:"info",

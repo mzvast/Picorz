@@ -159,6 +159,7 @@ function closeSettingWindow(){
 // });
 
 ipcMain.on('close-settings-window',closeSettingWindow)
+ipcMain.on('open-settings-window',openSettingsWindow)
 
 const template = [
   {
