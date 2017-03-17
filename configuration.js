@@ -14,14 +14,8 @@ function getUserHome() {
     return process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
 }
 
-function checkConfig() {
-    if (!readSettings('keys')) {
-        return false;
-    }
-    return true;
-}
 function checkKeys() {
-    if(!checkConfig()){
+    if(!readSettings('keys')){
         return false;
     }
     for (let i = 0; i < 4; i++) {
@@ -58,12 +52,20 @@ function initConfig() {
     if (!readSettings('domains')) {
         saveSettings('domains', []);
     }
+    if (!readSettings('prefix')) {
+        saveSettings('prefix', '');
+    }
+    if (!readSettings('suffix')) {
+        saveSettings('suffix', '');
+    }
+    if (!readSettings('timefix')) {
+        saveSettings('timefix', true);
+    }
 }
 
 module.exports = {
     saveSettings: saveSettings,
-    readSettings: readSettings,
-    checkConfig: checkConfig,
+    readSettings: readSettings,    
     checkKeys:checkKeys,
     addSettings: addSettings,
     removeSettings: removeSettings,

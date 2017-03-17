@@ -44,7 +44,11 @@ ipcMain.on('upload', (event, arg) => {
   let fileNameArr = path.normalize(arg).split('\\');
   let fileNameLen = fileNameArr.length;
   let filename = fileNameArr[fileNameLen-1];
-  let key = filename+"("+moment().format()+")";
+  let prefix = configuration.readSettings('prefix')+'-';
+  let suffix = '-'+configuration.readSettings('suffix');
+  let dateStr = "-"+moment().format();
+  let timefix = configuration.readSettings('timefix')?dateStr:'';
+  let key = prefix+filename+suffix+timefix;
   
   console.log(filepath,key);
   let client = getClient();
@@ -68,12 +72,13 @@ ipcMain.on('upload', (event, arg) => {
 let win
 
 function createWindow () {
+  // openSettingsWindow();
   //检查配置文件，初始化配置
-  if(!configuration.checkConfig()){
+  // if(!configuration.checkConfig()){
     configuration.initConfig();
-  }
+  // }
   // Create the browser window.
-  win = new BrowserWindow({width: 300, height: 400,alwaysOnTop: true, y: 0, x: 0})
+  win = new BrowserWindow({width: 300, height: 400,alwaysOnTop: true, y: 80, x: 0})
 
   // and load the index.html of the app.
   win.loadURL(url.format({
@@ -126,7 +131,7 @@ function openSettingsWindow () {
         return;
     }
 
-    settingsWindow = new BrowserWindow({height: 500,width: 350,alwaysOnTop: true,y:80,x:300
+    settingsWindow = new BrowserWindow({height: 500,width: 650,alwaysOnTop: false,y:80,x:300
     });
     settingsWindow.setMenu(null);
 

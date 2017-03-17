@@ -1,6 +1,6 @@
 {
   "version": "0.2.0",
-  "configurations": [
+  "configurations": [   
     {
       "name": "Debug Main Process",
       "type": "node",
@@ -11,7 +11,7 @@
         "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd"
       },
       "program": "${workspaceRoot}/main.js",
-      "protocol": "legacy",
+      "protocol": "legacy"
     }
   ]
 }
