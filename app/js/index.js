@@ -10,7 +10,7 @@ container.ondragleave = container.ondragend = () => {
 }
 container.ondrop = (e) => {
     e.preventDefault()
-    if (!configuration.checkConfig()) {
+    if (!configuration.checkKeys()) {
         dialog.showMessageBox(null, {
             type: "info",
             buttons: ['立即设置', 'cancel'],

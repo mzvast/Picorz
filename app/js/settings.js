@@ -11,9 +11,12 @@ for (var i = 0; i < settingboxesElements.length; i++) {
 }
 saveBtn.onclick = function (e) {
     e.preventDefault();
+    let tmp = [];
     for (var i = 0; i < settingboxesElements.length; i++) {
-        configuration.saveSettings('keys')[i] = settingboxesElements[i].value;
+        tmp[i] = settingboxesElements[i].value;
     }
+    configuration.saveSettings('keys',tmp);
+    
     dialog.showMessageBox(null,{
         type:"info",
         buttons:['Ok'],

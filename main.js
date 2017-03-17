@@ -64,21 +64,16 @@ ipcMain.on('upload', (event, arg) => {
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-function initConfig(){
-  if (!configuration.readSettings('keys')) {
-        configuration.saveSettings('keys', ['', '',
-        '',
-        ''
-        ]);
-    }
-}
 
 let win
 
 function createWindow () {
-  initConfig();//初始化配置文件
+  //检查配置文件，初始化配置
+  if(!configuration.checkConfig()){
+    configuration.initConfig();
+  }
   // Create the browser window.
-  win = new BrowserWindow({width: 300, height: 400})
+  win = new BrowserWindow({width: 300, height: 400,alwaysOnTop: true, y: 0, x: 0})
 
   // and load the index.html of the app.
   win.loadURL(url.format({
@@ -131,8 +126,9 @@ function openSettingsWindow () {
         return;
     }
 
-    settingsWindow = new BrowserWindow({frame: false,height: 500,width: 350
+    settingsWindow = new BrowserWindow({height: 500,width: 350,alwaysOnTop: true,y:80,x:300
     });
+    settingsWindow.setMenu(null);
 
     settingsWindow.loadURL(url.format({
     pathname: path.join(__dirname, '/app/settings.html'),
@@ -149,17 +145,30 @@ function openSettingsWindow () {
 }
 
 
-function closeSettingWindow(){
+function closeSettingsWindow(){
   settingsWindow.close();
   console.log('cancel!');
 }
 
-// ipcMain.on('save-settings-window', ()=>{    
-//   closeSettingWindow();
-// });
+function addBucket(bucket_name){
+  configuration.addSettings('buckets',bucket_name);
+}
+function addDomain(domain_name){
+  configuration.addSettings('domains',domain_name);
+}
+function removeBucket(bucket_name){
+  configuration.removeSettings('buckets',bucket_name);
+}
+function removeDomain(domain_name){
+  configuration.removeSettings('domains',domain_name);
+}
 
-ipcMain.on('close-settings-window',closeSettingWindow)
+ipcMain.on('close-settings-window',closeSettingsWindow)
 ipcMain.on('open-settings-window',openSettingsWindow)
+ipcMain.on('add-bucket',addBucket)
+ipcMain.on('remove-bucket',removeBucket)
+ipcMain.on('add-domain',addDomain)
+ipcMain.on('remove-domain',removeDomain)
 
 const template = [
   {
