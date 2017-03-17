@@ -14,16 +14,24 @@ Picyo(哟哟图床)是一个七牛云图床，开发的目的是为个人写mark
 所有配置数据本地存储。
 
 # 效果图
-主界面![](http://ogscovhkh.bkt.clouddn.com/snipaste_20170317_154344.png(2017-03-17T15:45:55+08:00))
-设置界面![](http://ogscovhkh.bkt.clouddn.com/snipaste_20170317_154413.png(2017-03-17T15:48:10+08:00))
-上传结果![](http://ogscovhkh.bkt.clouddn.com/snipaste_20170317_154609.png(2017-03-17T15:48:51+08:00))
-生成地址![](http://ogscovhkh.bkt.clouddn.com/snipaste_20170317_154629.png(2017-03-17T15:49:04+08:00))
+## 主界面
+![](http://ogscovhkh.bkt.clouddn.com/snipaste_20170317_154344.png(2017-03-17T15:45:55+08:00))
+
+## 设置界面
+![](http://ogscovhkh.bkt.clouddn.com/snipaste_20170317_154413.png(2017-03-17T15:48:10+08:00))
+
+## 上传结果
+![](http://ogscovhkh.bkt.clouddn.com/snipaste_20170317_154609.png(2017-03-17T15:48:51+08:00))
+
+## 生成地址
+![](http://ogscovhkh.bkt.clouddn.com/snipaste_20170317_154629.png(2017-03-17T15:49:04+08:00))
 
 # 使用说明
-需要注册七牛云，然后[在该界面](https://portal.qiniu.com/user/key)获取AK、SK，此外还需要bucket和domain。
-本工具基本上可以满足个人使用，能保证在key配置正确的情况下功能正常。
-自用为主，并没有设计引导提示，这个以后会有。
-遇到bug或者建议请提issue，谢谢。
+
+- 需要注册七牛云，然后[在该界面](https://portal.qiniu.com/user/key)获取AK、SK，此外还需要bucket和domain。
+- 本工具基本上可以满足个人使用，能保证在key配置正确的情况下功能正常。
+- 自用为主，并没有设计引导提示，这个以后会有。
+- 遇到bug或者建议请提issue，谢谢。
 
 # 未来计划
 
