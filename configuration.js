@@ -1,4 +1,4 @@
-const nconf = require('nconf').file({file: getUserHome() + '/yoyo-img-config.json'});
+const nconf = require('nconf').file({file: getUserHome() + '/picyo-config.json'});
 
 function saveSettings(settingKey, settingValue) {
     nconf.set(settingKey, settingValue);

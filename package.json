@@ -4,7 +4,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-packager . picyo --platform win32 --arch x64 --out dist/ --overwrite --icon=app/img/app-icon.ico",
+    "build": "electron-packager . picyo --platform win32 --arch x64 --out dist/ --overwrite --icon=app/img/app-icon.ico  --win32metadata.CompanyName=Picyo_by_mzvast --win32metadata.FileDescription=Picyo --win32metadata.OriginalFilename=picyo.exe --win32metadata.ProductName=Picyo --app-copyright=Picyo_by_mzvast",
     "setup": "electron-installer-windows --src dist/picyo-win32-x64/ --dest dist/installers/"
   },
   "devDependencies": {
