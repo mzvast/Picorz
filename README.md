@@ -18,7 +18,7 @@ Picyo(哟哟图床)是一个七牛云图床，开发的目的是为个人写mark
 ![](http://ogscovhkh.bkt.clouddn.com/snipaste_20170317_154344.png(2017-03-17T15:45:55+08:00))
 
 ## 设置界面
-![](http://ogscovhkh.bkt.clouddn.com/snipaste_20170317_154413.png(2017-03-17T15:48:10+08:00))
+![](http://ogscovhkh.bkt.clouddn.com/bbq-111.png-bbq-2017-03-17T23:47:08+08:00)
 
 ## 上传结果
 ![](http://ogscovhkh.bkt.clouddn.com/snipaste_20170317_154609.png(2017-03-17T15:48:51+08:00))
