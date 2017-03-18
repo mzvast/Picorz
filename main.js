@@ -72,14 +72,17 @@ ipcMain.on('upload', (event, arg) => {
 let win
 
 function createWindow () {
+  if(win){
+    return;
+  }
   // openSettingsWindow();
   //检查配置文件，初始化配置
   // if(!configuration.checkConfig()){
     configuration.initConfig();
   // }
   // Create the browser window.
-  win = new BrowserWindow({width: 300, height: 400,alwaysOnTop: true, y: 80, x: 0})
-
+  win = new BrowserWindow({width: 300, height: 400,alwaysOnTop: true, y: 80, x: 0,icon: __dirname + '/app/img/app-icon.ico'})
+  win.setMenu(menu)
   // and load the index.html of the app.
   win.loadURL(url.format({
     pathname: path.join(__dirname, '/app/index.html'),
@@ -192,11 +195,18 @@ const template = [
     submenu: [
       {
         label: '技术支持',
-        click () { require('electron').shell.openExternal('https://github.com/mzvast/picyo') }
+        click () { require('electron').shell.openExternal('https://github.com/mzvast/Picorz') }
+      },
+      {
+        label: '检查更新',
+        click () { require('electron').shell.openExternal('https://github.com/mzvast/Picorz/releases') }
+      },
+      {
+        label: '版本'+app.getVersion()
       }
     ]
   }
 ]
 
 const menu = Menu.buildFromTemplate(template)
-Menu.setApplicationMenu(menu)
+// Menu.setApplicationMenu(menu)

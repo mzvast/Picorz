@@ -9,19 +9,16 @@ Then, drag and drop a picture to pink zone to upload it and you'll be welcomed b
 GPL
 
 # 功能介绍
-Picyo(哟哟图床)是一个七牛云图床，开发的目的是为个人写markdown博客使用。
+Picorz是一个七牛云图床，开发的目的是为个人写markdown博客使用。
 基于electron框架，支持且只支持上传到七牛云。
 所有配置数据本地存储。
 
 # 效果图
 ## 主界面
-![](http://ogscovhkh.bkt.clouddn.com/snipaste_20170317_154344.png(2017-03-17T15:45:55+08:00))
+![](http://ogscovhkh.bkt.clouddn.com/Picorz-snipaste_20170318_092052.png-)
 
 ## 设置界面
 ![](http://ogscovhkh.bkt.clouddn.com/bbq-111.png-bbq-2017-03-17T23:47:08+08:00)
-
-## 上传结果
-![](http://ogscovhkh.bkt.clouddn.com/snipaste_20170317_154609.png(2017-03-17T15:48:51+08:00))
 
 ## 生成地址
 ![](http://ogscovhkh.bkt.clouddn.com/snipaste_20170317_154629.png(2017-03-17T15:49:04+08:00))
