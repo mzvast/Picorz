@@ -11,12 +11,41 @@ body{
     width: 100vw;
     background-color: pink;
 }
-.words{
+.my-pad{
     position: absolute;
-    top: 35vh;
-    left: 10vw;
-    color: lightyellow;
-    background-color: grey;
+    top: 2vh;
+    left: 2vw;
+    bottom: 2vh;
+    right: 2vw;
+    background-color: lightcyan;
     border-radius: 10px;
-    padding: 1em;
+}
+.my-text{
+    color: pink;
+    font-size: 2em;
+    position: absolute;
+    left: 25vw;
+    top: 30vh;
+}
+.my-text:hover{   
+    color: white;
+    background-color: greenyellow;
+}
+.my-btn{
+    position: absolute;
+    bottom: 10vh;
+    width: 35vw;
+    color: white;
+    font-size: 1.2em;
+    background-color: pink;
+}
+.my-btn:hover{   
+    color: white;
+    background-color: greenyellow;
+}
+.clip{
+    left: 10vw;
+}
+.picker{
+    left: 50vw;
 }

@@ -1,7 +1,9 @@
 const configuration = require('../configuration.js');
-const { ipcRenderer } = require('electron')
+const { ipcRenderer,clipboard } = require('electron')
 const { dialog } = require('electron').remote
 const container = document.getElementById('container')
+const clipEle = document.querySelector('.clip');
+const pickerEle = document.querySelector('.picker');
 container.ondragover = () => {
     return false;
 }
@@ -28,4 +30,9 @@ container.ondrop = (e) => {
     }
     ipcRenderer.send('upload', e.dataTransfer.files[0].path)
     return false;
+}
+
+clipEle.onclick = (e)=>{
+    e.preventDefault();
+    ipcRenderer.send('get-clipboard')
 }

@@ -2,7 +2,7 @@
 
 ![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/mzvast/picorz?branch=master&retina=true)
 
-[Download|下载](https://github.com/mzvast/Picorz/releases)
+[Download](https://github.com/mzvast/Picorz/releases/latest)
 
 ## What
 This app is used to accompany with markdown writer, especially for upload pictures to, for instance, qiniu cloud storage.
@@ -39,7 +39,7 @@ Picorz是一个七牛云图床，开发的目的是为个人写markdown博客使
 # 未来计划
 
 1.0版本
-- 剪贴板上传
+- 剪贴板上传[x]
 - markdown开关
 - 界面风格统一
 - 自定义后缀前缀规则[x]

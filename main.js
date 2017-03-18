@@ -1,21 +1,32 @@
 const setupEvents = require('./setupEvents')
- if (setupEvents.handleSquirrelEvent()) {
-    // squirrel event handled and app will exit in 1000ms, so don't do anything else
-    return;
- }
- 
-const {app, BrowserWindow,ipcMain,Menu,dialog,clipboard} = require('electron')
+if (setupEvents.handleSquirrelEvent()) {
+  // squirrel event handled and app will exit in 1000ms, so don't do anything else
+  return;
+}
+
+const { app, BrowserWindow, ipcMain, Menu, dialog, clipboard } = require('electron')
 const path = require('path')
 const url = require('url')
 const moment = require('moment')
 const configuration = require('./configuration.js')
 var qn = require('qn');
+require('electron-debug')({ showDevTools: true });
 
-function getClient(){
+/**
+ * Temp dep
+ */
+const temp = require('temp'),
+    fs   = require('fs'),
+    util  = require('util'),
+    exec = require('child_process').exec;
+// Automatically track and cleanup files at exit
+temp.track();
+
+function getClient() {
   return qn.create(getKeys())
 }
 
-function getKeys(){
+function getKeys() {
   return {
     accessKey: configuration.readSettings('keys')[0],
     secretKey: configuration.readSettings('keys')[1],
@@ -23,102 +34,89 @@ function getKeys(){
     origin: configuration.readSettings('keys')[3],
   }
 }
+function makeName(filename){
+  let prefix = configuration.readSettings('prefix') + '-';
+  let suffix = '-' + configuration.readSettings('suffix');
+  let dateStr = "-" + moment().format();
+  let timefix = configuration.readSettings('timefix') ? dateStr : '';
+  return prefix + filename + suffix + timefix;
+}
 
-// var client = qn.create({
-//   accessKey: config.ACCESS_KEY,
-//   secretKey: config.SECRET_KEY,
-//   bucket: config.Bucket_Name,
-//   origin: config.Domain,
-//   // timeout: 3600000, // default rpc timeout: one hour, optional
-//   // if your app outside of China, please set `uploadURL` to `http://up.qiniug.com/`
-//   // uploadURL: 'http://up.qiniu.com/',
-// });
-
-// upload a file with custom key
-
-// let filepath = './gtd.jpg'
-
-ipcMain.on('upload', (event, arg) => {
-  console.log(arg);  
-  let filepath = arg; 
+ipcMain.on('upload', (event,arg) => {
+  console.log(arg);
+  let filepath = arg;
   let fileNameArr = path.normalize(arg).split('\\');
   let fileNameLen = fileNameArr.length;
-  let filename = fileNameArr[fileNameLen-1];
-  let prefix = configuration.readSettings('prefix')+'-';
-  let suffix = '-'+configuration.readSettings('suffix');
-  let dateStr = "-"+moment().format();
-  let timefix = configuration.readSettings('timefix')?dateStr:'';
-  let key = prefix+filename+suffix+timefix;
+  let filename = fileNameArr[fileNameLen - 1];
   
-  console.log(filepath,key);
+  let key = makeName(filename);
+
+  console.log(filepath, key);
+  // doUpload(filename,key);
   let client = getClient();
   client.uploadFile(filepath, { key: key }, function (err, result) {
     console.log(result);
-    dialog.showMessageBox(null,{
-          type:"info",
-          buttons:['Ok'],
-          message:'markdown格式图片URL已经复制到剪贴板',
-          title:'上传成功'
-      },()=>{
-        clipboard.writeText("![]("+result.url+")");
-      });
+    dialog.showMessageBox(null, {
+      type: "info",
+      buttons: ['Ok'],
+      message: 'markdown格式图片URL已经复制到剪贴板',
+      title: '上传成功'
+    }, () => {
+      clipboard.writeText("![](" + result.url + ")");
+    });
   });
 })
 
-
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
+function doUpload(filepath,key){
+  let client = getClient();
+  client.uploadFile(filepath, { key: key }, function (err, result) {
+    console.log(result);
+    dialog.showMessageBox(null, {
+      type: "info",
+      buttons: ['Ok'],
+      message: 'markdown格式图片URL已经复制到剪贴板',
+      title: '上传成功'
+    }, () => {
+      clipboard.writeText("![](" + result.url + ")");
+    });
+  });
+}
 
 let win
 
-function createWindow () {
-  if(win){
+function createWindow() {
+  if (win) {
     return;
   }
-  // openSettingsWindow();
-  //检查配置文件，初始化配置
-  // if(!configuration.checkConfig()){
-    configuration.initConfig();
-  // }
-  // Create the browser window.
-  win = new BrowserWindow({width: 300, height: 400,alwaysOnTop: true, y: 80, x: 0,icon: __dirname + '/app/img/app-icon.ico'})
+  
+  configuration.initConfig();
+
+  win = new BrowserWindow({ width: 300, height: 400, alwaysOnTop: true, y: 80, x: 0, icon: __dirname + '/app/img/app-icon.ico' })
+  
   win.setMenu(menu)
-  // and load the index.html of the app.
+
   win.loadURL(url.format({
     pathname: path.join(__dirname, '/app/index.html'),
     protocol: 'file:',
     slashes: true
   }))
 
-  // Open the DevTools.
-  // win.webContents.openDevTools()
-
   // Emitted when the window is closed.
   win.on('closed', () => {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
     win = null
-  })  
+  })
 }
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
 app.on('ready', createWindow)
 
-// Quit when all windows are closed.
 app.on('window-all-closed', () => {
-  // On macOS it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
+
   if (process.platform !== 'darwin') {
     app.quit()
   }
 })
 
 app.on('activate', () => {
-  // On macOS it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
   if (win === null) {
     createWindow()
   }
@@ -129,54 +127,81 @@ app.on('activate', () => {
 
 let settingsWindow = null;
 
-function openSettingsWindow () {
-    if (settingsWindow) {
-        return;
-    }
+function openSettingsWindow() {
+  if (settingsWindow) {
+    return;
+  }
 
-    settingsWindow = new BrowserWindow({height: 500,width: 650,alwaysOnTop: false,y:80,x:300
-    });
-    settingsWindow.setMenu(null);
+  settingsWindow = new BrowserWindow({
+    height: 500, width: 650, alwaysOnTop: false, y: 80, x: 300
+  });
+  settingsWindow.setMenu(null);
 
-    settingsWindow.loadURL(url.format({
+  settingsWindow.loadURL(url.format({
     pathname: path.join(__dirname, '/app/settings.html'),
     protocol: 'file:',
     slashes: true
   }))
 
-    // Open the DevTools.
-    // settingsWindow.webContents.openDevTools()
+  // Open the DevTools.
+  // settingsWindow.webContents.openDevTools()
 
-    settingsWindow.on('closed', function () {
-        settingsWindow = null;
-    });
+  settingsWindow.on('closed', function () {
+    settingsWindow = null;
+  });
 }
 
 
-function closeSettingsWindow(){
+function closeSettingsWindow() {
   settingsWindow.close();
   console.log('cancel!');
 }
 
-function addBucket(bucket_name){
-  configuration.addSettings('buckets',bucket_name);
+function addBucket(bucket_name) {
+  configuration.addSettings('buckets', bucket_name);
 }
-function addDomain(domain_name){
-  configuration.addSettings('domains',domain_name);
+function addDomain(domain_name) {
+  configuration.addSettings('domains', domain_name);
 }
-function removeBucket(bucket_name){
-  configuration.removeSettings('buckets',bucket_name);
+function removeBucket(bucket_name) {
+  configuration.removeSettings('buckets', bucket_name);
 }
-function removeDomain(domain_name){
-  configuration.removeSettings('domains',domain_name);
+function removeDomain(domain_name) {
+  configuration.removeSettings('domains', domain_name);
+}
+function getClipboard() {
+  //path.join(__dirname, '/app/index.html')
+  // Process the data (note: error handling omitted)
+  let img = clipboard.readImage();
+  console.log(img.getSize());
+
+  temp.open('picorzimg',function(err,info){
+    if(!err){
+      fs.write(info.fd,img.toPNG());
+      fs.close(info.fd,function(err){
+        console.log(info.path);
+        doUpload(info.path,makeName('clipboard'));
+      })
+    }
+  })
+  // temp.mkdir('picorztmp', function(err, dirPath) {
+  //   var inputPath = path.join(dirPath, 'clipboard.png')
+  //   fs.writeFile(inputPath, img, function(err) {
+  //     if (err) throw err;
+  //     console.log(">>>>inputPath=",inputPath);
+  //     doUpload(inputPath,'clipboard.png');
+  //   });
+  // });
+  console.log(app.getAppPath())
 }
 
-ipcMain.on('close-settings-window',closeSettingsWindow)
-ipcMain.on('open-settings-window',openSettingsWindow)
-ipcMain.on('add-bucket',addBucket)
-ipcMain.on('remove-bucket',removeBucket)
-ipcMain.on('add-domain',addDomain)
-ipcMain.on('remove-domain',removeDomain)
+ipcMain.on('close-settings-window', closeSettingsWindow)
+ipcMain.on('open-settings-window', openSettingsWindow)
+ipcMain.on('add-bucket', addBucket)
+ipcMain.on('remove-bucket', removeBucket)
+ipcMain.on('add-domain', addDomain)
+ipcMain.on('remove-domain', removeDomain)
+ipcMain.on('get-clipboard',getClipboard)
 
 const template = [
   {
@@ -184,7 +209,7 @@ const template = [
     submenu: [
       {
         label: '账号设置',
-        click(){
+        click() {
           openSettingsWindow();
         }
       }
@@ -195,14 +220,14 @@ const template = [
     submenu: [
       {
         label: '技术支持',
-        click () { require('electron').shell.openExternal('https://github.com/mzvast/Picorz') }
+        click() { require('electron').shell.openExternal('https://github.com/mzvast/Picorz') }
       },
       {
         label: '检查更新',
-        click () { require('electron').shell.openExternal('https://github.com/mzvast/Picorz/releases') }
+        click() { require('electron').shell.openExternal('https://github.com/mzvast/Picorz/releases') }
       },
       {
-        label: '版本'+app.getVersion()
+        label: '版本' + app.getVersion()
       }
     ]
   }

@@ -4,18 +4,34 @@
 <head>
   <meta charset="UTF-8">
   <title>Picorz</title>
+  <meta charset="UTF-8">
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap-theme.min.css">
   <link rel="stylesheet" href="./css/index.css">
+  
 </head>
 
 <body>
   <div id="container">
-    <div class="words">拖动文件到此处上传<br>得到markdown格式地址</div>
+    <div class="my-pad"></div>
+    <div class="my-text">Drag&Drop</div>
+
+    
+    <button type="button" class="btn btn-large btn-block my-btn clip">Clipboard</button>
+    <button type="button" class="btn btn-large btn-block my-btn picker">OpenFile</button>
+    
     
   </div>
 
   <script src="./js/index.js"></script>
 
-
+  <script>
+  document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] +
+  ':35729/livereload.js?snipver=1"></' + 'script>')
+</script> 
 </body>
 
 </html>
