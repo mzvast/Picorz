@@ -43,6 +43,14 @@ body{
     color: white;
     background-color: greenyellow;
 }
+.markdown{
+    padding: 0.5em 0 0.5em 0;
+    left: 25vw;
+    bottom: 25vh;
+    width: 50vw;
+    border-radius: 0.5em;
+}
+
 .clip{
     left: 10vw;
 }

@@ -10,7 +10,7 @@ const url = require('url')
 const moment = require('moment')
 const configuration = require('./configuration.js')
 var qn = require('qn');
-require('electron-debug')({ showDevTools: true });
+// require('electron-debug')({ showDevTools: true });
 
 /**
  * Temp dep
@@ -54,17 +54,8 @@ ipcMain.on('upload', (event,arg) => {
   console.log(filepath, key);
   // doUpload(filename,key);
   let client = getClient();
-  client.uploadFile(filepath, { key: key }, function (err, result) {
-    console.log(result);
-    dialog.showMessageBox(null, {
-      type: "info",
-      buttons: ['Ok'],
-      message: 'markdown格式图片URL已经复制到剪贴板',
-      title: '上传成功'
-    }, () => {
-      clipboard.writeText("![](" + result.url + ")");
-    });
-  });
+
+  doUpload(filepath,key);
 })
 
 function doUpload(filepath,key){
@@ -74,10 +65,17 @@ function doUpload(filepath,key){
     dialog.showMessageBox(null, {
       type: "info",
       buttons: ['Ok'],
-      message: 'markdown格式图片URL已经复制到剪贴板',
+      message: '已经复制到剪贴板',
       title: '上传成功'
     }, () => {
-      clipboard.writeText("![](" + result.url + ")");
+      let markdownOn = configuration.readSettings('markdown');
+      let finalClip;
+      if(markdownOn){
+        finalClip = "![](" + result.url + ")"
+      }else{
+        finalClip = result.url;
+      }
+      clipboard.writeText(finalClip);
     });
   });
 }
@@ -170,8 +168,6 @@ function removeDomain(domain_name) {
   configuration.removeSettings('domains', domain_name);
 }
 function getClipboard() {
-  //path.join(__dirname, '/app/index.html')
-  // Process the data (note: error handling omitted)
   let img = clipboard.readImage();
   console.log(img.getSize());
 
@@ -184,16 +180,10 @@ function getClipboard() {
       })
     }
   })
-  // temp.mkdir('picorztmp', function(err, dirPath) {
-  //   var inputPath = path.join(dirPath, 'clipboard.png')
-  //   fs.writeFile(inputPath, img, function(err) {
-  //     if (err) throw err;
-  //     console.log(">>>>inputPath=",inputPath);
-  //     doUpload(inputPath,'clipboard.png');
-  //   });
-  // });
+
   console.log(app.getAppPath())
 }
+
 
 ipcMain.on('close-settings-window', closeSettingsWindow)
 ipcMain.on('open-settings-window', openSettingsWindow)
@@ -205,10 +195,10 @@ ipcMain.on('get-clipboard',getClipboard)
 
 const template = [
   {
-    label: '工具',
+    label: 'Tools',
     submenu: [
       {
-        label: '账号设置',
+        label: 'Account',
         click() {
           openSettingsWindow();
         }
@@ -216,18 +206,18 @@ const template = [
     ]
   },
   {
-    label: '关于',
+    label: 'About',
     submenu: [
       {
-        label: '技术支持',
+        label: 'Support',
         click() { require('electron').shell.openExternal('https://github.com/mzvast/Picorz') }
       },
       {
-        label: '检查更新',
+        label: 'Update',
         click() { require('electron').shell.openExternal('https://github.com/mzvast/Picorz/releases') }
       },
       {
-        label: '版本' + app.getVersion()
+        label: 'v' + app.getVersion()
       }
     ]
   }

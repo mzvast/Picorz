@@ -2,8 +2,12 @@ const configuration = require('../configuration.js');
 const { ipcRenderer,clipboard } = require('electron')
 const { dialog } = require('electron').remote
 const container = document.getElementById('container')
+const markdownEle = document.querySelector('.markdowncheck');
 const clipEle = document.querySelector('.clip');
 const pickerEle = document.querySelector('.picker');
+
+markdownEle.checked = configuration.readSettings('markdown');
+
 container.ondragover = () => {
     return false;
 }
@@ -35,4 +39,12 @@ container.ondrop = (e) => {
 clipEle.onclick = (e)=>{
     e.preventDefault();
     ipcRenderer.send('get-clipboard')
+}
+
+markdownEle.onclick = (e) => {   
+    toggleMarkdown ();
+};
+
+function toggleMarkdown () {    
+    configuration.saveSettings('markdown',markdownEle.checked)    
 }

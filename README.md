@@ -21,7 +21,7 @@ Picorz是一个七牛云图床，开发的目的是为个人写markdown博客使
 
 # 效果图
 ## 主界面
-![](http://ogscovhkh.bkt.clouddn.com/Picorz-snipaste_20170318_092052.png-)
+![](http://ogscovhkh.bkt.clouddn.com/Picorz-clipboard--2017-03-18T22:45:16+08:00)
 
 ## 设置界面
 ![](http://ogscovhkh.bkt.clouddn.com/bbq-111.png-bbq-2017-03-17T23:47:08+08:00)

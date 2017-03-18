@@ -61,6 +61,9 @@ function initConfig() {
     if (!readSettings('timefix')) {
         saveSettings('timefix', true);
     }
+    if (!readSettings('markdown')) {
+        saveSettings('markdown', true);
+    }
 }
 
 module.exports = {
