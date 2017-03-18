@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>设置</title>
+	<meta charset="UTF-8">
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap-theme.min.css">
+
+	<link rel="stylesheet" href="./css/settings.css">
+
+</head>
+
+<body>
+	<div id="container">
+		<h3 class="title text-center">七牛账号设置</h3>
+		<div class="row">
+			<div class="col-xs-10 col-xs-offset-1">
+				<div class="row">
+					<form class="col-xs-6">
+						<div class="form-group">
+							<label for="accessKey">ACCESS_KEY</label>
+							<input class="settingboxes form-control" type="text" id="accessKey" placeholder="ACCESS_KEY">
+						</div>
+						<div class="form-group">
+							<label for="secretKey">SECRET_KEY</label>
+							<input class="settingboxes form-control" type="text" id="secretKey" placeholder="SECRET_KEY">
+						</div>
+						<div class="form-group">
+							<label for="bucket">Bucket_Name</label>
+							<input class="settingboxes form-control" type="text" id="bucket" placeholder="bucket">
+						</div>
+						<div class="form-group">
+							<label for="origin">Domain</label>
+							<input class="settingboxes form-control" type="text" id="origin" placeholder="http://xxxx.bkt.clouddn.com/">
+						</div>
+					</form>
+					<div class="col-xs-6">
+						<form>
+							<div class="form-group">
+								<label for="prefix">文件名前缀</label>
+								<input class="fix form-control" type="text" id="prefix" placeholder="Picorz-">
+							</div>
+							<div class="form-group">
+								<label for="suffix">文件名后缀</label>
+								<input class="fix form-control" type="text" id="suffix" placeholder="-suffix">
+							</div>
+							<div class="checkbox ">
+								<label><input class="fix" type="checkbox" id="timefix">时间戳后缀</label>
+							</div>
+						</form>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<div class="row">
+			<div class="col-xs-4 col-xs-offset-7">
+				<button id="save" type="submit" class="btn btn-success btn-block pull-right">保存</button>
+			</div>
+		</div>
+	</div>
+	<!-- Latest compiled and minified JavaScript -->
+	<!--<script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>-->
+	<script src="./js/settings.js"></script>
+</body>
+
+</html>

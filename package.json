@@ -1,0 +1,32 @@
+{
+  "name": "Picorz",
+  "version": "0.2.2",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-packager . picorz --platform win32 --arch x64 --out dist/ --overwrite --icon=app/img/app-icon.ico  --win32metadata.CompanyName=Picorz.lab --win32metadata.FileDescription=Picorz --win32metadata.OriginalFilename=picyo.exe --win32metadata.ProductName=Picyo --app-copyright=Picyo_by_mzvast",
+    "setup": "electron-installer-windows --src dist/picorz-win32-x64/ --dest dist/installers/"
+  },
+  "devDependencies": {
+    "electron": "^1.6.2",
+    "electron-installer-windows": "^0.2.0",
+    "electron-packager": "^8.6.0"
+  },
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "moment": "^2.17.1",
+    "nconf": "^0.8.4",
+    "qn": "^1.3.0"
+  },
+  "author": {
+    "name": "mzvast",
+    "email": "mzvast@gmail.com",
+    "url": "https://github.com/mzvast/Picorz"
+  },
+  "description": "为Markdown而生的图床小工具",
+  "productDescription": "上传图片到七牛云，简便获取markdown格式URL",
+  "tags": [
+    "Utility"
+  ],
+  "license": "GPL"
+}
