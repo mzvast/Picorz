@@ -5,11 +5,11 @@ body{
     overflow: hidden;
 }
 #container{
-    /*border: hotpink dashed 3px;*/
+    /*border: hotRGB(242, 125, 177); dashed 3px;*/
     /*border-radius: 30px;*/
     height: 100vh;
     width: 100vw;
-    background-color: pink;
+    background-color: RGB(246, 172, 197);
 }
 .my-pad{
     position: absolute;
@@ -17,11 +17,11 @@ body{
     left: 2vw;
     bottom: 2vh;
     right: 2vw;
-    background-color: lightcyan;
-    border-radius: 10px;
+    background-color: RGB(255, 248, 164);
+    border-radius: 0;
 }
 .my-text{
-    color: pink;
+    color: RGB(246, 139, 31);
     font-size: 2em;
     position: absolute;
     left: 25vw;
@@ -37,18 +37,20 @@ body{
     width: 35vw;
     color: white;
     font-size: 1.2em;
-    background-color: pink;
+    background-color: RGB(246, 139, 31);
+    border-radius: 0;
 }
 .my-btn:hover{   
     color: white;
     background-color: greenyellow;
 }
-.markdown{
-    padding: 0.5em 0 0.5em 0;
+.go-resource{
+    /*padding: 0.5em 0 0.5em 0;*/
     left: 25vw;
     bottom: 25vh;
-    width: 50vw;
-    border-radius: 0.5em;
+    width: 45vw;
+    /*border-radius: 0.5em;*/
+    background-color: RGB(116, 206, 226);
 }
 
 .clip{

@@ -13,6 +13,7 @@ for (var i = 0; i < settingboxesElements.length; i++) {
 fixElements[0].value = configuration.readSettings('prefix')
 fixElements[1].value = configuration.readSettings('suffix')
 fixElements[2].checked = configuration.readSettings('timefix')
+fixElements[3].checked = configuration.readSettings('markdown')
 saveBtn.onclick = function (e) {
     e.preventDefault();
     let tmp = [];
@@ -24,13 +25,14 @@ saveBtn.onclick = function (e) {
     configuration.saveSettings('prefix',fixElements[0].value);
     configuration.saveSettings('suffix',fixElements[1].value);
     configuration.saveSettings('timefix',fixElements[2].checked);
-
-    dialog.showMessageBox(null,{
-        type:"info",
-        buttons:['Ok'],
-        message:'保存成功！',
-        title:'恭喜'
-    },()=>{
-        ipcRenderer.send('close-settings-window');
-    })
+    configuration.saveSettings('markdown',fixElements[3].checked);
+    ipcRenderer.send('close-settings-window');
+    // dialog.showMessageBox(null,{
+    //     type:"info",
+    //     buttons:['Ok'],
+    //     message:'保存成功！',
+    //     title:'恭喜'
+    // },()=>{
+    //     ipcRenderer.send('close-settings-window');
+    // })
 }

@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-	<title>设置</title>
+	<title>Settings</title>
 	<meta charset="UTF-8">
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
@@ -16,18 +16,18 @@
 
 <body>
 	<div id="container">
-		<h3 class="title text-center">七牛账号设置</h3>
+		<h3 class="title text-center">Qiniu Account Settings</h3>
 		<div class="row">
 			<div class="col-xs-10 col-xs-offset-1">
 				<div class="row">
-					<form class="col-xs-6">
+					<form class="col-xs-12">
 						<div class="form-group">
 							<label for="accessKey">ACCESS_KEY</label>
 							<input class="settingboxes form-control" type="text" id="accessKey" placeholder="ACCESS_KEY">
 						</div>
 						<div class="form-group">
 							<label for="secretKey">SECRET_KEY</label>
-							<input class="settingboxes form-control" type="text" id="secretKey" placeholder="SECRET_KEY">
+							<input class="settingboxes form-control" type="password" id="secretKey" placeholder="SECRET_KEY">
 						</div>
 						<div class="form-group">
 							<label for="bucket">Bucket_Name</label>
@@ -37,34 +37,34 @@
 							<label for="origin">Domain</label>
 							<input class="settingboxes form-control" type="text" id="origin" placeholder="http://xxxx.bkt.clouddn.com/">
 						</div>
-					</form>
-					<div class="col-xs-6">
-						<form>
+					
 							<div class="form-group">
-								<label for="prefix">文件名前缀</label>
+								<label for="prefix">Filename Prefix</label>
 								<input class="fix form-control" type="text" id="prefix" placeholder="Picorz-">
 							</div>
 							<div class="form-group">
-								<label for="suffix">文件名后缀</label>
+								<label for="suffix">Filename Suffix</label>
 								<input class="fix form-control" type="text" id="suffix" placeholder="-suffix">
 							</div>
 							<div class="checkbox ">
-								<label><input class="fix" type="checkbox" id="timefix">时间戳后缀</label>
+								<label><input class="fix" type="checkbox" id="timefix">Timestamp Suffix</label>
+							</div>
+							<div class="checkbox ">
+								<label><input class="fix" type="checkbox" id="markdown">Prefer Markdown Format</label>
 							</div>
 						</form>
 
-					</div>
 				</div>
 			</div>
 
 		</div>
-		<div class="row">
-			<div class="col-xs-4 col-xs-offset-7">
-				<button id="save" type="submit" class="btn btn-success btn-block pull-right">保存</button>
-			</div>
-		</div>
+				<button id="save" type="submit" class="btn my-save-btn">Save</button>
 	</div>
 	<script src="./js/settings.js"></script>
+	  <script>
+  document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] +
+  ':35729/livereload.js?snipver=1"></' + 'script>')
+</script>
 </body>
 
 </html>

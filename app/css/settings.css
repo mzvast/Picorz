@@ -2,23 +2,29 @@
     margin:0;
 }*/
 body{
-    overflow: hidden;
+    overflow-x: hidden;
+    background-color: RGB(255, 248, 164);
 }
- /*
-#container{
-    height: 100vh;
-    width: 100vw;
-   background-color: whitesmoke;
-    display: flex;
-    flex-wrap: wrap;*/
+.my-save-btn{
+    background-color: RGB(242, 125, 177);
+    color: white;
+    width: 6em;
+    /*height: 4em;*/
+    position: relative;
+    left:20em;
+    top:2em;
+    /*right: 10vw;
+    bottom: 13vh;*/
+    border-radius: 0;
 }
 
-/*label{
-    width: 30%;
+label,.title{
+    color:RGB(246, 139, 31);
+    font-weight: normal;
 }
-input{
-    width: 60%;
-}*/
 
-
-
+.settingboxes,.fix{
+    border-color: RGB(242, 125, 177);
+    border-radius: 0;
+    color:RGB(246, 139, 31);
+}

@@ -59,7 +59,7 @@ function initConfig() {
         saveSettings('suffix', '');
     }
     if (!readSettings('timefix')) {
-        saveSettings('timefix', true);
+        saveSettings('timefix', false);
     }
     if (!readSettings('markdown')) {
         saveSettings('markdown', true);

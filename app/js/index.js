@@ -1,12 +1,10 @@
 const configuration = require('../configuration.js');
-const { ipcRenderer,clipboard } = require('electron')
+const { ipcRenderer, clipboard, shell,remote } = require('electron')
 const { dialog } = require('electron').remote
 const container = document.getElementById('container')
-const markdownEle = document.querySelector('.markdowncheck');
 const clipEle = document.querySelector('.clip');
 const pickerEle = document.querySelector('.picker');
-
-markdownEle.checked = configuration.readSettings('markdown');
+const goResourceEle = document.querySelector('.go-resource');
 
 container.ondragover = () => {
     return false;
@@ -36,15 +34,18 @@ container.ondrop = (e) => {
     return false;
 }
 
-clipEle.onclick = (e)=>{
+clipEle.onclick = (e) => {
     e.preventDefault();
-    ipcRenderer.send('get-clipboard')
+    ipcRenderer.send('upload-clipboard')
 }
 
-markdownEle.onclick = (e) => {   
-    toggleMarkdown ();
-};
-
-function toggleMarkdown () {    
-    configuration.saveSettings('markdown',markdownEle.checked)    
+goResourceEle.onclick = (e) => {
+    e.preventDefault(e);
+    let bucketname = configuration.readSettings('keys')[2];
+    if (!bucketname) {
+        remote.dialog.showErrorBox('Bucket Undefined', 'Please set your bucket name in Tools->account');
+        return;
+    }
+    let nextUrl = 'https://portal.qiniu.com/bucket/' + configuration.readSettings('keys')[2] + '/resource';
+    shell.openExternal(nextUrl);
 }

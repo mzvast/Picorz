@@ -10,17 +10,22 @@ const url = require('url')
 const moment = require('moment')
 const configuration = require('./configuration.js')
 var qn = require('qn');
-// require('electron-debug')({ showDevTools: true });
+require('electron-debug')({ showDevTools: true });
 
 /**
  * Temp dep
  */
 const temp = require('temp'),
-    fs   = require('fs'),
-    util  = require('util'),
-    exec = require('child_process').exec;
+  fs = require('fs'),
+  util = require('util'),
+  exec = require('child_process').exec;
 // Automatically track and cleanup files at exit
 temp.track();
+
+
+function promptErr(msg) {
+  dialog.showErrorBox('Error', msg);
+}
 
 function getClient() {
   return qn.create(getKeys())
@@ -34,31 +39,59 @@ function getKeys() {
     origin: configuration.readSettings('keys')[3],
   }
 }
-function makeName(filename){
+function makeName(filename) {
   let prefix = configuration.readSettings('prefix') + '-';
   let suffix = '-' + configuration.readSettings('suffix');
   let dateStr = "-" + moment().format();
   let timefix = configuration.readSettings('timefix') ? dateStr : '';
   return prefix + filename + suffix + timefix;
 }
+/**
+ * 
+ * @param {*} rawURL 原始URL
+ * @param {*} type 是否markdown，0否，1是
+ */
+function setClipboardURL(rawURL, type) {
+  if (!rawURL) return;
+  let finalURL;
+  if (type === 0) {
+    finalURL = rawURL;
+  } else {
+    finalURL = "![](" + rawURL + ")";
+  }
+  clipboard.writeText(finalURL);
+}
 
-ipcMain.on('upload', (event,arg) => {
+ipcMain.on('upload', (event, arg) => {
   console.log(arg);
   let filepath = arg;
   let fileNameArr = path.normalize(arg).split('\\');
   let fileNameLen = fileNameArr.length;
   let filename = fileNameArr[fileNameLen - 1];
-  
+
   let key = makeName(filename);
 
   console.log(filepath, key);
   // doUpload(filename,key);
   let client = getClient();
 
-  doUpload(filepath,key);
+  doUpload(filepath, key);
 })
 
-function doUpload(filepath,key){
+function checkConfigBeforeUpload() {
+  let keys = configuration.readSettings('keys');
+  for (let i = 0; i < 4; i++) {
+    if (!keys[i]) {
+      promptErr('Please check settings!');
+      return false;
+    }
+  }
+  return true;
+}
+
+function doUpload(filepath, key) {
+  if(!checkConfigBeforeUpload()) return;
+
   let client = getClient();
   client.uploadFile(filepath, { key: key }, function (err, result) {
     console.log(result);
@@ -69,13 +102,7 @@ function doUpload(filepath,key){
       title: '上传成功'
     }, () => {
       let markdownOn = configuration.readSettings('markdown');
-      let finalClip;
-      if(markdownOn){
-        finalClip = "![](" + result.url + ")"
-      }else{
-        finalClip = result.url;
-      }
-      clipboard.writeText(finalClip);
+      setClipboardURL(result.url, markdownOn);
     });
   });
 }
@@ -86,11 +113,11 @@ function createWindow() {
   if (win) {
     return;
   }
-  
+
   configuration.initConfig();
 
   win = new BrowserWindow({ width: 300, height: 400, alwaysOnTop: true, y: 80, x: 0, icon: __dirname + '/app/img/app-icon.ico' })
-  
+
   win.setMenu(menu)
 
   win.loadURL(url.format({
@@ -131,7 +158,7 @@ function openSettingsWindow() {
   }
 
   settingsWindow = new BrowserWindow({
-    height: 500, width: 650, alwaysOnTop: false, y: 80, x: 300
+    height: 650, width: 400, alwaysOnTop: false, y: 80, x: 300
   });
   settingsWindow.setMenu(null);
 
@@ -167,21 +194,24 @@ function removeBucket(bucket_name) {
 function removeDomain(domain_name) {
   configuration.removeSettings('domains', domain_name);
 }
-function getClipboard() {
-  let img = clipboard.readImage();
-  console.log(img.getSize());
 
-  temp.open('picorzimg',function(err,info){
-    if(!err){
-      fs.write(info.fd,img.toPNG());
-      fs.close(info.fd,function(err){
+
+function getClipboardIMG() {
+  let img = clipboard.readImage();
+  return img;
+}
+function uploadClipboard(){
+  if(!checkConfigBeforeUpload()) return;
+  let img = getClipboardIMG();
+  temp.open('picorzimg', function (err, info) {
+    if (!err) {
+      fs.write(info.fd, img.toPNG());
+      fs.close(info.fd, function (err) {
         console.log(info.path);
-        doUpload(info.path,makeName('clipboard'));
+        doUpload(info.path, makeName('clipboard'));
       })
     }
   })
-
-  console.log(app.getAppPath())
 }
 
 
@@ -191,14 +221,14 @@ ipcMain.on('add-bucket', addBucket)
 ipcMain.on('remove-bucket', removeBucket)
 ipcMain.on('add-domain', addDomain)
 ipcMain.on('remove-domain', removeDomain)
-ipcMain.on('get-clipboard',getClipboard)
+ipcMain.on('upload-clipboard', uploadClipboard)
 
 const template = [
   {
     label: 'Tools',
     submenu: [
       {
-        label: 'Account',
+        label: 'Settings',
         click() {
           openSettingsWindow();
         }
