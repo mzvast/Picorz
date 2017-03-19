@@ -59,3 +59,16 @@ body{
 .picker{
     left: 50vw;
 }
+
+.cp-URL,.cp-MD{
+    bottom: 80vh;
+    background-color: RGB(246, 172, 197);
+}
+
+.cp-URL{
+    left: 10vw;
+}
+
+.cp-MD{
+    left: 50vw;
+}

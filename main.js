@@ -9,9 +9,29 @@ const path = require('path')
 const url = require('url')
 const moment = require('moment')
 const configuration = require('./configuration.js')
-var qn = require('qn');
+const qn = require('qn');
 require('electron-debug')({ showDevTools: true });
+let URLHistory = [];
+let currentURL;
 
+function addURLtoHistory(newURL){
+  URLHistory.push(newURL);
+  currentURL = newURL;
+}
+
+function saveHistoryToJSON(){
+  let oldHistory = configuration.readSettings('URLHistory');
+  configuration.saveSettings('URLHistory',oldHistory.concat(URLHistory));
+}
+
+function cpCurrentURL(){
+  if(!currentURL) {return promptErr('No history')};
+  setClipboardURL(currentURL,0);
+}
+function cpCurrentMD(){
+  if(!currentURL) {return promptErr('No history')};
+  setClipboardURL(currentURL,1);
+}
 /**
  * Temp dep
  */
@@ -54,11 +74,13 @@ function makeName(filename) {
 function setClipboardURL(rawURL, type) {
   if (!rawURL) return;
   let finalURL;
+  console.log('type=',type);
   if (type === 0) {
     finalURL = rawURL;
   } else {
     finalURL = "![](" + rawURL + ")";
   }
+  currentURL = rawURL;
   clipboard.writeText(finalURL);
 }
 
@@ -116,7 +138,7 @@ function createWindow() {
 
   configuration.initConfig();
 
-  win = new BrowserWindow({ width: 300, height: 400, alwaysOnTop: true, y: 80, x: 0, icon: __dirname + '/app/img/app-icon.ico' })
+  win = new BrowserWindow({ width: 300, height: 400, alwaysOnTop: false, y: 80, x: 0, icon: __dirname + '/app/img/app-icon.ico' })
 
   win.setMenu(menu)
 
@@ -135,6 +157,7 @@ function createWindow() {
 app.on('ready', createWindow)
 
 app.on('window-all-closed', () => {
+  saveHistoryToJSON();
 
   if (process.platform !== 'darwin') {
     app.quit()
@@ -208,7 +231,8 @@ function uploadClipboard(){
       fs.write(info.fd, img.toPNG());
       fs.close(info.fd, function (err) {
         console.log(info.path);
-        doUpload(info.path, makeName('clipboard'));
+        let newname = makeName('pasteshot')+"-" + moment().format()
+        doUpload(info.path, newname);
       })
     }
   })
@@ -222,6 +246,8 @@ ipcMain.on('remove-bucket', removeBucket)
 ipcMain.on('add-domain', addDomain)
 ipcMain.on('remove-domain', removeDomain)
 ipcMain.on('upload-clipboard', uploadClipboard)
+ipcMain.on('cp-URL',cpCurrentURL);
+ipcMain.on('cp-MD',cpCurrentMD);
 
 const template = [
   {

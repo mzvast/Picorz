@@ -1,11 +1,12 @@
 const configuration = require('../configuration.js');
-const { ipcRenderer, clipboard, shell,remote } = require('electron')
+const { ipcRenderer, clipboard, shell, remote } = require('electron')
 const { dialog } = require('electron').remote
 const container = document.getElementById('container')
 const clipEle = document.querySelector('.clip');
 const pickerEle = document.querySelector('.picker');
 const goResourceEle = document.querySelector('.go-resource');
-
+const cpURLEle = document.querySelector('.cp-URL');
+const cpMDEle = document.querySelector('.cp-MD');
 container.ondragover = () => {
     return false;
 }
@@ -38,6 +39,17 @@ clipEle.onclick = (e) => {
     e.preventDefault();
     ipcRenderer.send('upload-clipboard')
 }
+pickerEle.onclick = (e) => {
+    e.preventDefault();
+    dialog.showOpenDialog(null, {       
+        properties:[
+            'openFile'
+        ]
+    },(paths)=>{
+        let path = paths[0];
+        ipcRenderer.send('upload',path);
+    });
+}
 
 goResourceEle.onclick = (e) => {
     e.preventDefault(e);
@@ -48,4 +60,13 @@ goResourceEle.onclick = (e) => {
     }
     let nextUrl = 'https://portal.qiniu.com/bucket/' + configuration.readSettings('keys')[2] + '/resource';
     shell.openExternal(nextUrl);
+}
+cpURLEle.onclick = (e) => {
+    e.preventDefault(e);
+    ipcRenderer.send('cp-URL');
+}
+
+cpMDEle.onclick = (e) => {
+    e.preventDefault(e);
+    ipcRenderer.send('cp-MD');
 }

@@ -64,6 +64,9 @@ function initConfig() {
     if (!readSettings('markdown')) {
         saveSettings('markdown', true);
     }
+    if (!readSettings('URLHistory')) {
+        saveSettings('URLHistory', []);
+    }
 }
 
 module.exports = {
